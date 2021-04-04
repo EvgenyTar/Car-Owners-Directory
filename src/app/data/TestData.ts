@@ -2,14 +2,14 @@ import { CarEntity } from '../model/car';
 import { OwnerEntity } from '../model/owner';
 
 export class TestData {
-  static owners: OwnerEntity[] = [
+  static owners = [
     { id: 1, firstName: 'Петр', lastName: 'Петров', middleName: 'Петрович' },
     { id: 2, firstName: 'Иван', lastName: 'Иванов', middleName: 'Иванович' },
     { id: 3, firstName: 'Ефим', lastName: 'Ефимов', middleName: 'Ефимович' },
     { id: 4, firstName: 'Илья', lastName: 'Ильин', middleName: 'Ильич' },
   ];
 
-  static cars: CarEntity[] = [
+  static cars = [
     {
       id: 1,
       idOwner: 1,

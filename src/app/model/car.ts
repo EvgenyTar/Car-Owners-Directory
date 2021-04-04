@@ -21,4 +21,15 @@ export class CarEntity {
     this.carModel = carModel;
     this.productionYear = prodYear;
   }
+
+  static createFromAny(data: any): CarEntity {
+    return new CarEntity(
+      data.id,
+      data.idOwner,
+      data.registrationMark,
+      data.carManufacturer,
+      data.carModel,
+      data.productionYear
+    );
+  }
 }

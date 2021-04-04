@@ -1,1 +1,21 @@
-<h2>{{ title }}</h2>
+<button (click)="addOwner()">Добавить</button>
+<button>Просмотр</button>
+<button>Изменить</button>
+<button>Удалить</button>
+<table class="table">
+  <!-- Position Column -->
+  <thead>
+    <th>Фамилия</th>
+    <th>Имя</th>
+    <th>Отчество</th>
+    <th>Количество автомобилей</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let owner of owners | async" (click)="onSelect(owner)">
+      <td>{{ owner.lastName }}</td>
+      <td>{{ owner.firstName }}</td>
+      <td>{{ owner.middleName }}</td>
+      <td>{{ owner.carsEntity.length }}</td>
+    </tr>
+  </tbody>
+</table>
