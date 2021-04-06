@@ -8,6 +8,12 @@
   background-color: #eee;
 }
 
+.btn {
+  margin: 10px 10px 10px 0;
+  border: 1px solid #ccc;
+  background-color: #eee;
+}
+
 .btn-disable {
   cursor: not-allowed;
   pointer-events: none;
@@ -15,4 +21,8 @@
   /*Button disabled - CSS color class*/
   color: #c0c0c0;
   background-color: #ffffff;
+}
+
+.btn-add {
+  margin-right: 20px;
 }

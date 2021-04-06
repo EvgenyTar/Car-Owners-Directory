@@ -10,6 +10,7 @@ import { CarOwnersService } from 'src/app/service/car-owners.service';
 })
 export class CarsOwnerAddComponent implements OnInit {
   owner = new OwnerEntity(-1, '', '', '');
+
   constructor(
     private router: Router,
     private carOwnersService: CarOwnersService
@@ -23,10 +24,14 @@ export class CarsOwnerAddComponent implements OnInit {
         this.owner.lastName,
         this.owner.firstName,
         this.owner.middleName,
-        []
+        this.owner.cars
       )
       .subscribe((_) => {
         this.router.navigateByUrl('');
       });
+  }
+
+  closeOwner() {
+    this.router.navigateByUrl('');
   }
 }

@@ -1,10 +1,11 @@
 import { CarEntity } from './car';
+
 export class OwnerEntity {
   id: number;
   firstName: string;
   lastName: string;
   middleName: string;
-  carsEntity!: CarEntity[];
+  cars: CarEntity[] = [];
 
   constructor(
     id: number,

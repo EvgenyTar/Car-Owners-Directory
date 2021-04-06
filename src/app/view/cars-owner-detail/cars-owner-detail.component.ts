@@ -27,7 +27,7 @@ export class CarsOwnerDetailComponent implements OnInit {
         carModel: '',
         productionYear: 1990,
       });
-      this.owner.carsEntity.push(newCar);
+      this.owner.cars.push(newCar);
 
       // owner = this.carOwnersService.getOwnerById(idOwner);
     }

@@ -1,17 +1,24 @@
-<button (click)="addOwner()">Добавить</button>
+<h2>Владельцы автомобилей</h2>
+
+<button class="btn btn-add" (click)="addOwner()">
+  <img src="" alt="" /> Добавить
+</button>
 <button
+  class="btn"
   (click)="viewOwner()"
   [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
 >
   Просмотр
 </button>
 <button
+  class="btn"
   (click)="editOwner()"
   [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
 >
-  Изменить
+  Редактировать
 </button>
 <button
+  class="btn"
   (click)="deleteOwner()"
   [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
 >
@@ -39,7 +46,7 @@
       <td>{{ owner.lastName }}</td>
       <td>{{ owner.firstName }}</td>
       <td>{{ owner.middleName }}</td>
-      <td>{{ owner.carsEntity.length }}</td>
+      <td>{{ owner.cars.length }}</td>
     </tr>
   </tbody>
 </table>

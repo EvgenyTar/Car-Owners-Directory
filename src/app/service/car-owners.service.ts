@@ -18,7 +18,7 @@ export class CarOwnersService implements ICarOwnersService {
         const idOwner = item.id;
         const cars = this.getCarsByOwnerId(idOwner);
         const owner = OwnerEntity.createFromAny(item);
-        owner.carsEntity = cars;
+        owner.cars = cars;
         return owner;
       })
     );
@@ -48,7 +48,7 @@ export class CarOwnersService implements ICarOwnersService {
         }
         const cars = this.getCarsByOwnerId(id);
         const owner = OwnerEntity.createFromAny(findOwner);
-        owner.carsEntity = cars;
+        owner.cars = cars;
         return owner;
       })
     );
@@ -74,6 +74,13 @@ export class CarOwnersService implements ICarOwnersService {
           middleName: aMiddleName,
         });
 
+        let maxCarId = TestData.getMaxIdCar() + 1;
+
+        for (let i = 0; i < aCars.length; i++) {
+          aCars[i].idOwner = newId;
+          aCars[i].id = maxCarId++;
+          TestData.cars.push(aCars[i]);
+        }
         return this.getOwnerById(newId);
       })
     );
@@ -95,21 +102,19 @@ export class CarOwnersService implements ICarOwnersService {
         findOwner.lastName = aOwner.lastName;
         findOwner.middleName = aOwner.middleName;
 
-        for (let i = 0; i < aOwner.carsEntity.length; i++) {
+        for (let i = 0; i < aOwner.cars.length; i++) {
           let findCarEntity = TestData.cars.find(
-            (item) => item.id === aOwner.carsEntity[i].id
+            (item) => item.id === aOwner.cars[i].id
           );
           if (findCarEntity) {
-            findCarEntity.carManufacturer =
-              aOwner.carsEntity[i].carManufacturer;
-            findCarEntity.carModel = aOwner.carsEntity[i].carModel;
-            findCarEntity.productionYear = aOwner.carsEntity[i].productionYear;
-            findCarEntity.registrationMark =
-              aOwner.carsEntity[i].registrationMark;
+            findCarEntity.carManufacturer = aOwner.cars[i].carManufacturer;
+            findCarEntity.carModel = aOwner.cars[i].carModel;
+            findCarEntity.productionYear = aOwner.cars[i].productionYear;
+            findCarEntity.registrationMark = aOwner.cars[i].registrationMark;
           } else {
-            if (aOwner.carsEntity[i].id === -1) {
-              aOwner.carsEntity[i].id = maxCarId++;
-              TestData.cars.push(aOwner.carsEntity[i]);
+            if (aOwner.cars[i].id === -1) {
+              aOwner.cars[i].id = maxCarId++;
+              TestData.cars.push(aOwner.cars[i]);
             }
           }
         }
