@@ -5,6 +5,7 @@
     type="text"
     id="last-name"
     [(ngModel)]="owner.lastName"
+    [readonly]="readOnly"
   />
 </div>
 <div class="form-group">
@@ -14,6 +15,7 @@
     type="text"
     id="first-name"
     [(ngModel)]="owner.firstName"
+    [readonly]="readOnly"
   />
 </div>
 <div class="form-group">
@@ -23,8 +25,63 @@
     type="text"
     id="middle-name"
     [(ngModel)]="owner.middleName"
+    [readonly]="readOnly"
   />
 </div>
 
 <h3>Автомобили</h3>
-<table></table>
+
+<div class="row">
+  <div class="col">
+    <label for="">Номер</label>
+  </div>
+  <div class="col">
+    <label for="">Марка</label>
+  </div>
+  <div class="col">
+    <label for="">Модель</label>
+  </div>
+  <div class="col">
+    <label for="">Год</label>
+  </div>
+</div>
+<div class="row" *ngFor="let car of owner.carsEntity">
+  <div class="col">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="car.registrationMark"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="car.carManufacturer"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="car.carModel"
+      [readonly]="readOnly"
+    />
+  </div>
+  <div class="col">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="car.productionYear"
+      [readonly]="readOnly"
+    />
+  </div>
+</div>
+
+<div class="detail-footer" *ngIf="!readOnly">
+  <button type="submit" class="btn btn-primary" (click)="createCar()">
+    Добавить автомобиль
+  </button>
+</div>

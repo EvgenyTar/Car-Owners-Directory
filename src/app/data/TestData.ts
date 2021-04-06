@@ -99,4 +99,12 @@ export class TestData {
       productionYear: 2019,
     },
   ];
+
+  static getMaxIdCar() {
+    return this.cars.reduce(
+      (maxId, currentCar, index, cars) =>
+        currentCar.id > maxId ? currentCar.id : maxId,
+      0
+    );
+  }
 }

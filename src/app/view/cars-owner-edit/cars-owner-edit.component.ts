@@ -1,17 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { OwnerEntity } from 'src/app/model/owner';
+import { CarOwnersService } from 'src/app/service/car-owners.service';
 
 @Component({
   selector: 'app-cars-owner-edit',
   templateUrl: './cars-owner-edit.component.html',
   styleUrls: ['./cars-owner-edit.component.css'],
 })
-export class CarsOwnerEditComponent implements OnInit {
-  constructor(private router: Router) {}
+export class CarsOwnerEditComponent implements OnInit, OnDestroy {
+  owner!: OwnerEntity;
+  private getOwnerSubscription!: Subscription | null;
+  private editOwnerSubscription!: Subscription;
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router,
+    private carOwnersService: CarOwnersService,
+    private activateRoute: ActivatedRoute
+  ) {}
 
-  saveOwner() {
+  ngOnInit(): void {
+    this.getOwnerSubscription = this.activateRoute.paramMap
+      .pipe(
+        switchMap((params) => {
+          const ownerId = Number(params.get('id'));
+          return this.carOwnersService.getOwnerById(ownerId);
+        })
+      )
+      .subscribe((owner) => {
+        this.owner = owner;
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.getOwnerSubscription) {
+      this.getOwnerSubscription.unsubscribe();
+    }
+    if (this.editOwnerSubscription) {
+      this.editOwnerSubscription.unsubscribe();
+    }
+  }
+
+  editOwner() {
+    console.log(this.owner);
+
+    this.editOwnerSubscription = this.carOwnersService
+      .editOwner(this.owner)
+      .subscribe((_) => {
+        this.router.navigateByUrl('');
+      });
+  }
+
+  closeOwner() {
     this.router.navigateByUrl('');
   }
 }

@@ -1,0 +1,11 @@
+.form-control {
+  margin-bottom: 10px;
+}
+
+.btn-hide {
+  visibility: hidden;
+}
+
+.detail-footer {
+  margin: 10px 0;
+}

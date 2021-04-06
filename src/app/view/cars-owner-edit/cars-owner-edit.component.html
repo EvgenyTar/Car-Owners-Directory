@@ -1,1 +1,10 @@
-<p>cars-owner-edit works!</p>
+<form>
+  <app-cars-owner-detail [owner]="owner"></app-cars-owner-detail>
+
+  <button type="submit" class="btn btn-primary" (click)="editOwner()">
+    Сохранить
+  </button>
+  <button type="submit" class="btn btn-primary" (click)="closeOwner()">
+    Назад
+  </button>
+</form>

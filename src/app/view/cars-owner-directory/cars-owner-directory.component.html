@@ -1,17 +1,41 @@
 <button (click)="addOwner()">Добавить</button>
-<button>Просмотр</button>
-<button>Изменить</button>
-<button>Удалить</button>
-<table class="table">
+<button
+  (click)="viewOwner()"
+  [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
+>
+  Просмотр
+</button>
+<button
+  (click)="editOwner()"
+  [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
+>
+  Изменить
+</button>
+<button
+  (click)="deleteOwner()"
+  [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
+>
+  Удалить
+</button>
+<table
+  class="table table-bordered"
+  [ngClass]="{ 'table-hover': !selectedOwnerEntity }"
+>
   <!-- Position Column -->
   <thead>
-    <th>Фамилия</th>
-    <th>Имя</th>
-    <th>Отчество</th>
-    <th>Количество автомобилей</th>
+    <tr>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Отчество</th>
+      <th scope="col">Количество автомобилей</th>
+    </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let owner of owners | async" (click)="onSelect(owner)">
+    <tr
+      *ngFor="let owner of owners | async"
+      (click)="onSelect(owner)"
+      [ngClass]="{ selected: selectedOwnerEntity?.id === owner.id }"
+    >
       <td>{{ owner.lastName }}</td>
       <td>{{ owner.firstName }}</td>
       <td>{{ owner.middleName }}</td>
