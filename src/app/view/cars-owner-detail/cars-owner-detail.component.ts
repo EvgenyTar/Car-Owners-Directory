@@ -3,6 +3,7 @@ import { OwnerEntity } from './../../model/owner';
 import { Router } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
 import { CarEntity } from 'src/app/model/car';
+import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cars-owner-detail',
@@ -12,6 +13,8 @@ import { CarEntity } from 'src/app/model/car';
 export class CarsOwnerDetailComponent implements OnInit {
   @Input() owner!: OwnerEntity;
   @Input() readOnly = false;
+  faPlus = faPlus;
+  faTrashAlt = faTrashAlt;
 
   constructor() {}
 

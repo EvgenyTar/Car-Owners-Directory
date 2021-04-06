@@ -124,9 +124,6 @@ export class CarOwnersService implements ICarOwnersService {
   }
 
   deleteOwner(aOwnerId: number): void {
-    // TestData.cars = TestData.cars.filter((item) => item.idOwner !== aOwnerId);
-    // TestData.owners = TestData.owners.filter((item) => item.id !== aOwnerId);
-
     for (let i = 0; i < TestData.cars.length; i++) {
       if (TestData.cars[i].idOwner === aOwnerId) {
         TestData.cars.splice(i, 1);
@@ -134,11 +131,11 @@ export class CarOwnersService implements ICarOwnersService {
       }
     }
 
-    for (let i = 0; i < TestData.owners.length; i++) {
-      if (TestData.owners[i].id === aOwnerId) {
-        TestData.owners.splice(i, 1);
-        i--;
-      }
+    const ownerIndex = TestData.owners.findIndex(
+      (item) => item.id === aOwnerId
+    );
+    if (ownerIndex !== -1) {
+      TestData.owners.splice(ownerIndex, 1);
     }
   }
 

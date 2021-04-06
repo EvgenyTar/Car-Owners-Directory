@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { OwnerEntity } from 'src/app/model/owner';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
+import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cars-owner-view',
@@ -11,6 +12,7 @@ import { CarOwnersService } from 'src/app/service/car-owners.service';
 })
 export class CarsOwnerViewComponent implements OnInit {
   owner!: OwnerEntity;
+  faArrowCircleLeft = faArrowCircleLeft;
 
   constructor(
     private router: Router,

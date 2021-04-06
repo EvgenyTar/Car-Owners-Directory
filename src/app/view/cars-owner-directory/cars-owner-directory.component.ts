@@ -4,6 +4,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
 import { OwnerEntity } from '../../model/owner';
 import { Router } from '@angular/router';
+import {
+  faPlus,
+  faEdit,
+  faEye,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cars-owner-directory',
@@ -13,6 +19,10 @@ import { Router } from '@angular/router';
 export class CarsOwnerDirectoryComponent implements OnInit, OnDestroy {
   title = 'Владельцы автомобилей';
   rowNoSelected = true;
+  faPlus = faPlus;
+  faEdit = faEdit;
+  faEye = faEye;
+  faTrashAlt = faTrashAlt;
 
   selectedOwnerEntity!: OwnerEntity;
 

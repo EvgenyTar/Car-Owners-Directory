@@ -2,6 +2,7 @@ import { OwnerEntity } from './../../model/owner';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
+import { faSave, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cars-owner-add',
@@ -10,6 +11,8 @@ import { CarOwnersService } from 'src/app/service/car-owners.service';
 })
 export class CarsOwnerAddComponent implements OnInit {
   owner = new OwnerEntity(-1, '', '', '');
+  faSave = faSave;
+  faArrowCircleLeft = faArrowCircleLeft;
 
   constructor(
     private router: Router,

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CarsOwnerAddComponent } from './view/cars-owner-add/cars-owner-add.component';
 import { CarsOwnerEditComponent } from './view/cars-owner-edit/cars-owner-edit.component';
 import { CarsOwnerViewComponent } from './view/cars-owner-view/cars-owner-view.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CarsOwnerViewComponent } from './view/cars-owner-view/cars-owner-view.c
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    FontAwesomeModule,
   ],
 
   providers: [],

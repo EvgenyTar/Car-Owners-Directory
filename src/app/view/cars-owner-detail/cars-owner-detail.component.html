@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group row">
   <label for="last-name">Фамилия</label>
   <input
     class="form-control"
@@ -8,7 +8,7 @@
     [readonly]="readOnly"
   />
 </div>
-<div class="form-group">
+<div class="form-group row">
   <label for="first-name">Имя</label>
   <input
     class="form-control"
@@ -18,7 +18,7 @@
     [readonly]="readOnly"
   />
 </div>
-<div class="form-group">
+<div class="form-group row">
   <label for="middle-name">Отчество</label>
   <input
     class="form-control"
@@ -82,6 +82,7 @@
 
 <div class="detail-footer" *ngIf="!readOnly">
   <button type="submit" class="btn btn-primary" (click)="createCar()">
+    <fa-icon [icon]="faPlus"></fa-icon>
     Добавить автомобиль
   </button>
 </div>

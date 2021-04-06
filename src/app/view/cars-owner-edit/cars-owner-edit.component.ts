@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { OwnerEntity } from 'src/app/model/owner';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
+import { faSave, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-cars-owner-edit',
@@ -14,6 +15,8 @@ export class CarsOwnerEditComponent implements OnInit, OnDestroy {
   owner!: OwnerEntity;
   private getOwnerSubscription!: Subscription | null;
   private editOwnerSubscription!: Subscription;
+  faSave = faSave;
+  faArrowCircleLeft = faArrowCircleLeft;
 
   constructor(
     private router: Router,

@@ -1,13 +1,14 @@
 <h2>Владельцы автомобилей</h2>
 
 <button class="btn btn-add" (click)="addOwner()">
-  <img src="" alt="" /> Добавить
+  <fa-icon [icon]="faPlus"></fa-icon> Добавить
 </button>
 <button
   class="btn"
   (click)="viewOwner()"
   [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
 >
+  <fa-icon [icon]="faEye"></fa-icon>
   Просмотр
 </button>
 <button
@@ -15,6 +16,7 @@
   (click)="editOwner()"
   [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
 >
+  <fa-icon [icon]="faEdit"></fa-icon>
   Редактировать
 </button>
 <button
@@ -22,6 +24,7 @@
   (click)="deleteOwner()"
   [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
 >
+  <fa-icon [icon]="faTrashAlt"></fa-icon>
   Удалить
 </button>
 <table
