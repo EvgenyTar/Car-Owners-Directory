@@ -7,9 +7,9 @@ import { CarsOwnerEditComponent } from './view/cars-owner-edit/cars-owner-edit.c
 import { CarsOwnerViewComponent } from './view/cars-owner-view/cars-owner-view.component';
 
 const routes: Routes = [
-  { path: 'add', component: CarsOwnerAddComponent },
-  { path: 'edit/:id', component: CarsOwnerEditComponent },
-  { path: 'view/:id', component: CarsOwnerViewComponent },
+  { path: ':act', component: CarsOwnerDetailComponent },
+  { path: ':act/:id', component: CarsOwnerDetailComponent },
+  // { path: ':act/:id', component: CarsOwnerViewComponent },
   { path: '', component: CarsOwnerDirectoryComponent },
 ];
 

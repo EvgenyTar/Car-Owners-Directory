@@ -17,6 +17,7 @@ export class CarsOwnerEditComponent implements OnInit, OnDestroy {
   private editOwnerSubscription!: Subscription;
   faSave = faSave;
   faArrowCircleLeft = faArrowCircleLeft;
+  act = '';
 
   constructor(
     private router: Router,
@@ -29,6 +30,9 @@ export class CarsOwnerEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap((params) => {
           const ownerId = Number(params.get('id'));
+          console.log('переход с параметром id: ', this.act);
+          this.act = String(params.get('act'));
+          console.log('переход с параметром act: ', this.act);
           return this.carOwnersService.getOwnerById(ownerId);
         })
       )
@@ -58,5 +62,9 @@ export class CarsOwnerEditComponent implements OnInit, OnDestroy {
 
   closeOwner() {
     this.router.navigateByUrl('');
+  }
+
+  cl() {
+    console.log('act-act-act', this.act);
   }
 }

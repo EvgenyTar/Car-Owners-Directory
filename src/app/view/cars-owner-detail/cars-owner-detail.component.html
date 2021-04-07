@@ -1,100 +1,133 @@
-<div class="form-group row my-row first-row">
-  <label for="last-name" class="col-sm-1 col-form-label-sm">Фамилия</label>
-  <div class="col-sm-4">
-    <input
-      class="form-control"
-      type="text"
-      id="last-name"
-      [(ngModel)]="owner.lastName"
-      [readonly]="readOnly"
-    />
+<form [formGroup]="formOwnerEntity" (ngSubmit)="saveDataOwnerEntity()">
+  <!-- Owner -->
+  <div class="form-group row my-row first-row">
+    <label for="last-name" class="col-sm-1 col-form-label-sm">Фамилия</label>
+    <div class="col-sm-4">
+      <input
+        class="form-control"
+        type="text"
+        id="last-name"
+        name="last-name"
+        formControlName="lastName"
+        [readonly]="readOnly"
+      />
+    </div>
   </div>
-</div>
-<div class="form-group row my-row">
-  <label for="first-name" class="col-sm-1 col-form-label-sm">Имя</label>
-  <div class="col-sm-4">
-    <input
-      class="form-control"
-      type="text"
-      id="first-name"
-      [(ngModel)]="owner.firstName"
-      [readonly]="readOnly"
-    />
+  <div class="form-group row my-row">
+    <label for="first-name" class="col-sm-1 col-form-label-sm">Имя</label>
+    <div class="col-sm-4">
+      <input
+        class="form-control"
+        type="text"
+        id="first-name"
+        name="first-name"
+        formControlName="firstName"
+        [readonly]="readOnly"
+      />
+    </div>
   </div>
-</div>
-<div class="form-group row my-row">
-  <label for="middle-name" class="col-sm-1 col-form-label-sm">Отчество</label>
-  <div class="col-sm-4">
-    <input
-      class="form-control"
-      type="text"
-      id="middle-name"
-      [(ngModel)]="owner.middleName"
-      [readonly]="readOnly"
-    />
+  <div class="form-group row my-row">
+    <label for="middle-name" class="col-sm-1 col-form-label-sm">Отчество</label>
+    <div class="col-sm-4">
+      <input
+        class="form-control"
+        type="text"
+        id="middle-name"
+        name="middle-name"
+        formControlName="middleName"
+        [readonly]="readOnly"
+      />
+    </div>
   </div>
-</div>
+  <!-- End Owner -->
 
-<h3>Автомобили</h3>
+  <h3>Автомобили</h3>
 
-<div class="row my-row">
-  <div class="col">
-    <label class="my-label">Номер</label>
+  <!-- Cars table head -->
+  <div class="row my-row">
+    <div class="col">
+      <label class="my-label">Номер</label>
+    </div>
+    <div class="col">
+      <label class="my-label">Марка</label>
+    </div>
+    <div class="col">
+      <label class="my-label">Модель</label>
+    </div>
+    <div class="col">
+      <label class="my-label">Год</label>
+    </div>
+    <div class="col"></div>
   </div>
-  <div class="col">
-    <label class="my-label">Марка</label>
+
+  <!-- Cars table body -->
+  <div formArrayName="cars" *ngFor="let car of cars.controls; let i = index">
+    <div class="row my-row" [formGroupName]="i">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          name="registrationMark"
+          form
+          formControlName="registrationMark"
+          [readonly]="readOnly"
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          name="carManufacturer"
+          formControlName="carManufacturer"
+          [readonly]="readOnly"
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          name="carModel"
+          formControlName="carModel"
+          [readonly]="readOnly"
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          name="productionYear"
+          formControlName="productionYear"
+          [readonly]="readOnly"
+        />
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-danger">
+          <fa-icon [icon]="faTrashAlt"></fa-icon>
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="col">
-    <label class="my-label">Модель</label>
-  </div>
-  <div class="col">
-    <label class="my-label">Год</label>
-  </div>
-  <div class="col"></div>
-</div>
-<div class="row my-row" *ngFor="let car of owner.cars">
-  <div class="col">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="car.registrationMark"
-      [readonly]="readOnly"
-    />
-  </div>
-  <div class="col">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="car.carManufacturer"
-      [readonly]="readOnly"
-    />
-  </div>
-  <div class="col">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="car.carModel"
-      [readonly]="readOnly"
-    />
-  </div>
-  <div class="col">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="car.productionYear"
-      [readonly]="readOnly"
-    />
-  </div>
-  <div class="col">
-    <button type="submit" class="btn btn-danger" (click)="deleteCar(car)">
-      <fa-icon [icon]="faTrashAlt"></fa-icon>
+  <!-- End cars -->
+
+  <div class="detail-footer" *ngIf="!readOnly">
+    <button type="button" class="btn btn-primary" (click)="addCar()">
+      <fa-icon [icon]="faPlus"></fa-icon>
+      Добавить автомобиль
     </button>
   </div>
-</div>
 
-<div class="detail-footer" *ngIf="!readOnly">
-  <button type="submit" class="btn btn-primary" (click)="createCar()">
-    <fa-icon [icon]="faPlus"></fa-icon>
-    Добавить автомобиль
+  <!-- Switch Case Edit -->
+  <!-- <div [ngSwitch]="act">
+    <div *ngSwitchCase="'edit'"> -->
+  <button type="submit" class="btn btn-primary" [disabled]="false">
+    <fa-icon [icon]="faSave"></fa-icon>
+    Сохранить
   </button>
-</div>
+  <button type="button" class="btn btn-secondary" (click)="closeOwner()">
+    <fa-icon [icon]="faArrowCircleLeft"></fa-icon>
+    Назад
+  </button>
+  <!-- </div>
+  </div> -->
+  <!-- END Edit -->
+</form>

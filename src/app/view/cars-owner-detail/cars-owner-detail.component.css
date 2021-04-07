@@ -2,6 +2,10 @@
   margin-bottom: 10px;
 }
 
+.btn {
+  margin-right: 10px;
+}
+
 .btn-hide {
   visibility: hidden;
 }

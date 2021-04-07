@@ -1,6 +1,6 @@
 import { element } from 'protractor';
 import { Observable, Subscription } from 'rxjs';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
 import { OwnerEntity } from '../../model/owner';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import {
   templateUrl: './cars-owner-directory.component.html',
   styleUrls: ['./cars-owner-directory.component.css'],
 })
-export class CarsOwnerDirectoryComponent implements OnInit, OnDestroy {
+export class CarsOwnerDirectoryComponent implements OnInit {
   title = 'Владельцы автомобилей';
   rowNoSelected = true;
   faPlus = faPlus;
@@ -34,33 +34,14 @@ export class CarsOwnerDirectoryComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.subscribeTest = this.carOwnersService
-      .getOwners()
-      .subscribe((owners) => {
-        this.owners2 = owners;
-      });
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscribeTest) {
-      this.subscribeTest.unsubscribe();
-    }
-  }
+  ngOnInit(): void {}
 
   onSelect(owner: OwnerEntity) {
     this.selectedOwnerEntity = owner;
     console.log(this.selectedOwnerEntity); //          УБРАТЬ!!!!
-    const x = this.owners;
-    this.owners = x;
-    const x3 = this.owners3();
   }
 
   get owners(): Observable<OwnerEntity[]> {
-    return this.carOwnersService.getOwners();
-  }
-
-  owners3(): Observable<OwnerEntity[]> {
     return this.carOwnersService.getOwners();
   }
 
