@@ -1,51 +1,58 @@
-<div class="form-group row">
-  <label for="last-name">Фамилия</label>
-  <input
-    class="form-control"
-    type="text"
-    id="last-name"
-    [(ngModel)]="owner.lastName"
-    [readonly]="readOnly"
-  />
+<div class="form-group row my-row first-row">
+  <label for="last-name" class="col-sm-1 col-form-label-sm">Фамилия</label>
+  <div class="col-sm-4">
+    <input
+      class="form-control"
+      type="text"
+      id="last-name"
+      [(ngModel)]="owner.lastName"
+      [readonly]="readOnly"
+    />
+  </div>
 </div>
-<div class="form-group row">
-  <label for="first-name">Имя</label>
-  <input
-    class="form-control"
-    type="text"
-    id="first-name"
-    [(ngModel)]="owner.firstName"
-    [readonly]="readOnly"
-  />
+<div class="form-group row my-row">
+  <label for="first-name" class="col-sm-1 col-form-label-sm">Имя</label>
+  <div class="col-sm-4">
+    <input
+      class="form-control"
+      type="text"
+      id="first-name"
+      [(ngModel)]="owner.firstName"
+      [readonly]="readOnly"
+    />
+  </div>
 </div>
-<div class="form-group row">
-  <label for="middle-name">Отчество</label>
-  <input
-    class="form-control"
-    type="text"
-    id="middle-name"
-    [(ngModel)]="owner.middleName"
-    [readonly]="readOnly"
-  />
+<div class="form-group row my-row">
+  <label for="middle-name" class="col-sm-1 col-form-label-sm">Отчество</label>
+  <div class="col-sm-4">
+    <input
+      class="form-control"
+      type="text"
+      id="middle-name"
+      [(ngModel)]="owner.middleName"
+      [readonly]="readOnly"
+    />
+  </div>
 </div>
 
 <h3>Автомобили</h3>
 
-<div class="row">
+<div class="row my-row">
   <div class="col">
-    <label for="">Номер</label>
+    <label class="my-label">Номер</label>
   </div>
   <div class="col">
-    <label for="">Марка</label>
+    <label class="my-label">Марка</label>
   </div>
   <div class="col">
-    <label for="">Модель</label>
+    <label class="my-label">Модель</label>
   </div>
   <div class="col">
-    <label for="">Год</label>
+    <label class="my-label">Год</label>
   </div>
+  <div class="col"></div>
 </div>
-<div class="row" *ngFor="let car of owner.cars">
+<div class="row my-row" *ngFor="let car of owner.cars">
   <div class="col">
     <input
       type="text"
@@ -77,6 +84,11 @@
       [(ngModel)]="car.productionYear"
       [readonly]="readOnly"
     />
+  </div>
+  <div class="col">
+    <button type="submit" class="btn btn-danger" (click)="deleteCar(car)">
+      <fa-icon [icon]="faTrashAlt"></fa-icon>
+    </button>
   </div>
 </div>
 

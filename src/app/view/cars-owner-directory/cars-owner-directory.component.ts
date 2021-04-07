@@ -34,10 +34,6 @@ export class CarsOwnerDirectoryComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  private newMethod(): any {
-    return this;
-  }
-
   ngOnInit(): void {
     this.subscribeTest = this.carOwnersService
       .getOwners()

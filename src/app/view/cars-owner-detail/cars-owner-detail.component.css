@@ -9,3 +9,15 @@
 .detail-footer {
   margin: 10px 0;
 }
+
+.my-row {
+  margin: 5px 0;
+}
+
+.first-row {
+  margin-top: 20px;
+}
+
+.my-label {
+  margin: 0;
+}

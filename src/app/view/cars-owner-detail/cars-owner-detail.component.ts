@@ -13,6 +13,9 @@ import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 export class CarsOwnerDetailComponent implements OnInit {
   @Input() owner!: OwnerEntity;
   @Input() readOnly = false;
+
+  selectedCarEntity!: CarEntity;
+
   faPlus = faPlus;
   faTrashAlt = faTrashAlt;
 
@@ -33,6 +36,18 @@ export class CarsOwnerDetailComponent implements OnInit {
       this.owner.cars.push(newCar);
 
       // owner = this.carOwnersService.getOwnerById(idOwner);
+    }
+  }
+
+  deleteCar(car: CarEntity) {
+    this.selectedCarEntity = car;
+    if (this.selectedCarEntity && this.owner) {
+      console.log(car);
+      const indexSelectedCar = this.owner.cars.findIndex(
+        (item) => item.id === car.id
+      );
+      console.log('index: ', indexSelectedCar);
+      this.owner.cars.splice(indexSelectedCar, 1);
     }
   }
 }

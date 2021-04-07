@@ -3,34 +3,19 @@
 <button class="btn btn-add" (click)="addOwner()">
   <fa-icon [icon]="faPlus"></fa-icon> Добавить
 </button>
-<button
-  class="btn"
-  (click)="viewOwner()"
-  [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
->
+<button class="btn" (click)="viewOwner()" [disabled]="!selectedOwnerEntity">
   <fa-icon [icon]="faEye"></fa-icon>
   Просмотр
 </button>
-<button
-  class="btn"
-  (click)="editOwner()"
-  [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
->
+<button class="btn" (click)="editOwner()" [disabled]="!selectedOwnerEntity">
   <fa-icon [icon]="faEdit"></fa-icon>
   Редактировать
 </button>
-<button
-  class="btn"
-  (click)="deleteOwner()"
-  [ngClass]="{ 'btn-disable': !selectedOwnerEntity }"
->
+<button class="btn" (click)="deleteOwner()" [disabled]="!selectedOwnerEntity">
   <fa-icon [icon]="faTrashAlt"></fa-icon>
   Удалить
 </button>
-<table
-  class="table table-bordered"
-  [ngClass]="{ 'table-hover': !selectedOwnerEntity }"
->
+<table class="table table-bordered" [ngClass]="{ 'table-hover': true }">
   <!-- Position Column -->
   <thead>
     <tr>
