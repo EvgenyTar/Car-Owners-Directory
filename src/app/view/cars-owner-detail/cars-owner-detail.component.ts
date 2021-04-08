@@ -7,8 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
-import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
-// import { FormControl, FormGroup, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormArray,
+  FormGroup,
+  FormControl,
+  ValidationErrors,
+} from '@angular/forms';
 import {
   faPlus,
   faTrashAlt,
@@ -26,7 +32,6 @@ export class CarsOwnerDetailComponent implements OnInit {
 
   selectedCarEntity!: CarEntity;
 
-  //--------------------------------------------------------
   owner!: OwnerEntity;
   private getOwnerSubscription!: Subscription | null;
   private editOwnerSubscription!: Subscription;
@@ -37,11 +42,13 @@ export class CarsOwnerDetailComponent implements OnInit {
   actionType: ActionType = ActionType.View;
 
   formOwnerEntity = this.formBuilder.group({
-    lastName: [''],
-    firstName: [''],
-    middleName: [''],
+    lastName: ['', Validators.required],
+    firstName: ['', Validators.required],
+    middleName: ['', Validators.required],
     cars: this.formBuilder.array([]),
   });
+
+  //--------------------------------------------------------
 
   constructor(
     private router: Router,
@@ -50,23 +57,6 @@ export class CarsOwnerDetailComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  // -----------------cars: formBuilder-------------
-
-  get cars() {
-    return this.formOwnerEntity.get('cars') as FormArray;
-  }
-
-  addCar() {
-    this.cars.push(
-      this.formBuilder.group({
-        registrationMark: [''],
-        carManufacturer: [''],
-        carModel: [''],
-        productionYear: [1990],
-      })
-    );
-  }
-  //-------------------edit-------------------------
   ngOnInit(): void {
     this.getOwnerSubscription = this.activateRoute.paramMap
       .pipe(
@@ -87,14 +77,6 @@ export class CarsOwnerDetailComponent implements OnInit {
           firstName: this.owner.firstName,
           middleName: this.owner.middleName,
           cars: this.formBuilder.array(this.getCarsGroups()),
-          //   cars: this.formBuilder.array([
-          //     {
-          //       registrationMark: [''],
-          //       carManufacturer: [''],
-          //       carModel: [''],
-          //       productionYear: [1990],
-          //     },
-          //   ]),
         });
       });
   }
@@ -108,6 +90,13 @@ export class CarsOwnerDetailComponent implements OnInit {
     }
   }
 
+  // -----------------cars: formBuilder-------------
+  // геттер для массива авто(каждое авто - группа форм)
+  get cars() {
+    return this.formOwnerEntity.get('cars') as FormArray;
+  }
+
+  //Добавление в форму всех авто из owner-а
   getCarsGroups() {
     return this.owner.cars.map((car) =>
       this.formBuilder.group({
@@ -119,6 +108,68 @@ export class CarsOwnerDetailComponent implements OnInit {
     );
   }
 
+  // добавление нового авто в форму
+  addCarToGroup() {
+    this.cars.push(
+      this.formBuilder.group({
+        registrationMark: [
+          '',
+          [Validators.required, this.registrationMarkValidator],
+        ],
+        carManufacturer: ['', Validators.required],
+        carModel: ['', Validators.required],
+        productionYear: [
+          1990,
+          [Validators.required, this.productionYearValidator],
+        ],
+      })
+    );
+  }
+
+  // -----------------Валидаторы--------------------
+
+  private registrationMarkValidator(
+    control: FormControl
+  ): ValidationErrors | null {
+    const value = control.value;
+
+    const startCharacter = value.substring(0, 2);
+    const numberInMark = value.substring(2, 6);
+    const endCharacter = value.substring(6, 8);
+
+    const correctLenth = value ? value.length === 8 : false;
+    const correctStartCharacter = /[А-Я][А-Я]/.test(value);
+    const correctNumberInMark = /[0-9][0-9][0-9][0-9]/.test(value);
+    const correctEndharacter = /[А-Я][А-Я]/.test(value);
+
+    const registrationMarkValid =
+      correctLenth &&
+      correctStartCharacter &&
+      correctNumberInMark &&
+      correctEndharacter;
+
+    if (!registrationMarkValid) {
+      return { invalidNumber: 'Формат: АА7777КК' };
+    }
+    return null;
+  }
+
+  private productionYearValidator(
+    control: FormControl
+  ): ValidationErrors | null {
+    const value = control.value;
+
+    const today = new Date();
+    const thisYear = today.getFullYear();
+    const correcProductionYear = value >= 1990 && value <= thisYear;
+
+    if (!correcProductionYear) {
+      return { invalidYear: '1990 - ' + thisYear };
+    }
+    return null;
+  }
+
+  //-------------------edit-------------------------
   editOwner() {
     console.log(this.owner);
 
@@ -129,22 +180,10 @@ export class CarsOwnerDetailComponent implements OnInit {
       });
   }
 
-  closeOwner() {
+  logOutOwner() {
     this.router.navigateByUrl('');
   }
   //--------------------------------------------------------
-
-  saveDataOwnerEntity() {
-    console.warn(this.formOwnerEntity.value);
-    // this.formOwnerEntity.patchValue()  // Можно загружать часть данных, например без cars
-    this.formOwnerEntity = this.formBuilder.group({
-      lastName: ['Evgen'],
-      firstName: ['Tar'],
-      middleName: ['Vital'],
-      cars: this.formBuilder.array([]),
-    });
-    console.warn(this.formOwnerEntity.value);
-  }
 
   createCar() {
     if (this.owner) {
@@ -172,5 +211,10 @@ export class CarsOwnerDetailComponent implements OnInit {
       console.log('index: ', indexSelectedCar);
       this.owner.cars.splice(indexSelectedCar, 1);
     }
+  }
+
+  // Нажимаем кнопку "Сохранить"
+  onSubmit() {
+    console.log('Submit button:', this.formOwnerEntity.value);
   }
 }

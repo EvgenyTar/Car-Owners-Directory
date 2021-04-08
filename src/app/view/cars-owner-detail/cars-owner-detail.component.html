@@ -1,4 +1,4 @@
-<form [formGroup]="formOwnerEntity" (ngSubmit)="saveDataOwnerEntity()">
+<form [formGroup]="formOwnerEntity" (ngSubmit)="onSubmit()">
   <!-- Owner -->
   <div class="form-group row my-row first-row">
     <label for="last-name" class="col-sm-1 col-form-label-sm">Фамилия</label>
@@ -110,7 +110,7 @@
   <!-- End cars -->
 
   <div class="detail-footer" *ngIf="!readOnly">
-    <button type="button" class="btn btn-primary" (click)="addCar()">
+    <button type="button" class="btn btn-primary" (click)="addCarToGroup()">
       <fa-icon [icon]="faPlus"></fa-icon>
       Добавить автомобиль
     </button>
@@ -119,11 +119,15 @@
   <!-- Switch Case Edit -->
   <!-- <div [ngSwitch]="act">
     <div *ngSwitchCase="'edit'"> -->
-  <button type="submit" class="btn btn-primary" [disabled]="false">
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="!formOwnerEntity.valid"
+  >
     <fa-icon [icon]="faSave"></fa-icon>
     Сохранить
   </button>
-  <button type="button" class="btn btn-secondary" (click)="closeOwner()">
+  <button type="button" class="btn btn-secondary" (click)="logOutOwner()">
     <fa-icon [icon]="faArrowCircleLeft"></fa-icon>
     Назад
   </button>
