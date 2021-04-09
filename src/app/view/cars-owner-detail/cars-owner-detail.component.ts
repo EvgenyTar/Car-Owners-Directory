@@ -4,6 +4,7 @@ import { OwnerEntity } from './../../model/owner';
 import { CarEntity } from 'src/app/model/car';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
@@ -54,7 +55,8 @@ export class CarsOwnerDetailComponent implements OnInit {
     private router: Router,
     private carOwnersService: CarOwnersService,
     private activateRoute: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +67,9 @@ export class CarsOwnerDetailComponent implements OnInit {
           console.log('переход с параметром id: ', ownerId);
           this.actionType = String(params.get('act')) as ActionType;
           console.log('переход с параметром act: ', this.actionType);
+          if (this.actionType === ActionType.View) {
+            this.readOnly = true;
+          }
           return this.carOwnersService.getOwnerById(ownerId);
         })
       )
@@ -180,8 +185,8 @@ export class CarsOwnerDetailComponent implements OnInit {
       });
   }
 
-  logOutOwner() {
-    this.router.navigateByUrl('');
+  goBack() {
+    this.location.back();
   }
   //--------------------------------------------------------
 
@@ -213,8 +218,37 @@ export class CarsOwnerDetailComponent implements OnInit {
     }
   }
 
+  saveOwner() {
+    const owner = this.formOwnerEntity.value;
+    switch (this.actionType) {
+      case ActionType.Add:
+        console.log('case ActionType.Add:');
+        this.carOwnersService
+          .createOwner(
+            owner.lastName,
+            owner.firstName,
+            owner.middleName,
+            owner.cars
+          )
+          .subscribe((_) => {
+            this.router.navigateByUrl('');
+          });
+        break;
+      case ActionType.Edit:
+        console.log(' case ActionType.Edit:');
+        this.owner.lastName = owner.lastName;
+        this.owner.firstName = owner.firstName;
+        this.owner.middleName = owner.middleName;
+        this.carOwnersService.editOwner(this.owner).subscribe((_) => {
+          this.router.navigateByUrl('');
+        });
+        break;
+    }
+  }
+
   // Нажимаем кнопку "Сохранить"
   onSubmit() {
+    this.saveOwner();
     console.log('Submit button:', this.formOwnerEntity.value);
   }
 }

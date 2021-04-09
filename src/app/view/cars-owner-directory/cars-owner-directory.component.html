@@ -27,7 +27,7 @@
   </thead>
   <tbody>
     <tr
-      *ngFor="let owner of owners | async"
+      *ngFor="let owner of owners"
       (click)="onSelect(owner)"
       [ngClass]="{ selected: selectedOwnerEntity?.id === owner.id }"
     >

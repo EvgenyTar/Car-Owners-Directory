@@ -2,16 +2,9 @@
   margin-bottom: 10px;
 }
 
-.btn {
-  margin-right: 10px;
-}
-
-.btn-hide {
-  visibility: hidden;
-}
-
-.detail-footer {
-  margin: 10px 0;
+.margin-10-no-left {
+  margin: 10px;
+  margin-left: 0;
 }
 
 .my-row {

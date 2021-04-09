@@ -101,37 +101,45 @@
         />
       </div>
       <div class="col">
-        <button type="button" class="btn btn-danger">
-          <fa-icon [icon]="faTrashAlt"></fa-icon>
-        </button>
+        <div *ngIf="!readOnly">
+          <button type="button" class="btn btn-danger">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>
   <!-- End cars -->
 
-  <div class="detail-footer" *ngIf="!readOnly">
-    <button type="button" class="btn btn-primary" (click)="addCarToGroup()">
-      <fa-icon [icon]="faPlus"></fa-icon>
-      Добавить автомобиль
+  <!-- Edit or Add owner -->
+  <div>
+    <div class="col" *ngIf="!readOnly">
+      <button type="button" class="btn btn-primary" (click)="addCarToGroup()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Добавить автомобиль
+      </button>
+    </div>
+
+    <span *ngIf="!readOnly">
+      <button
+        type="submit"
+        class="btn btn-primary margin-10-no-left"
+        [disabled]="!formOwnerEntity.valid"
+      >
+        <fa-icon [icon]="faSave"></fa-icon>
+        Сохранить
+      </button>
+    </span>
+    <!-- END "Edit or Add owner" -->
+
+    <button
+      type="button"
+      class="btn btn-secondary margin-10-no-left"
+      (click)="goBack()"
+    >
+      <fa-icon [icon]="faArrowCircleLeft"></fa-icon>
+      Назад
     </button>
   </div>
-
-  <!-- Switch Case Edit -->
-  <!-- <div [ngSwitch]="act">
-    <div *ngSwitchCase="'edit'"> -->
-  <button
-    type="submit"
-    class="btn btn-primary"
-    [disabled]="!formOwnerEntity.valid"
-  >
-    <fa-icon [icon]="faSave"></fa-icon>
-    Сохранить
-  </button>
-  <button type="button" class="btn btn-secondary" (click)="logOutOwner()">
-    <fa-icon [icon]="faArrowCircleLeft"></fa-icon>
-    Назад
-  </button>
-  <!-- </div>
-  </div> -->
-  <!-- END Edit -->
+  <!-- container-footer -->
 </form>

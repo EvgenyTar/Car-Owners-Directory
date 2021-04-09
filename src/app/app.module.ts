@@ -11,6 +11,9 @@ import { CarsOwnerAddComponent } from './view/cars-owner-add/cars-owner-add.comp
 import { CarsOwnerEditComponent } from './view/cars-owner-edit/cars-owner-edit.component';
 import { CarsOwnerViewComponent } from './view/cars-owner-view/cars-owner-view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryOwnersDataService } from 'src/app/service/in-memory-owners-data.service';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryOwnersDataService, {
+      dataEncapsulation: false,
+    }),
   ],
 
   providers: [],

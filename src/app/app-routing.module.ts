@@ -9,7 +9,6 @@ import { CarsOwnerViewComponent } from './view/cars-owner-view/cars-owner-view.c
 const routes: Routes = [
   { path: ':act', component: CarsOwnerDetailComponent },
   { path: ':act/:id', component: CarsOwnerDetailComponent },
-  // { path: ':act/:id', component: CarsOwnerViewComponent },
   { path: '', component: CarsOwnerDirectoryComponent },
 ];
 

@@ -12,5 +12,5 @@ export default interface ICarOwnersService {
     aCars: CarEntity[]
   ): Observable<OwnerEntity>;
   editOwner(aOwner: OwnerEntity): Observable<OwnerEntity>;
-  deleteOwner(aOwnerId: number): void;
+  deleteOwner(aOwnerId: number): Observable<void>;
 }

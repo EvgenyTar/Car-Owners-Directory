@@ -10,6 +10,7 @@ import {
   faEye,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cars-owner-directory',
@@ -24,47 +25,71 @@ export class CarsOwnerDirectoryComponent implements OnInit {
   faEye = faEye;
   faTrashAlt = faTrashAlt;
 
-  selectedOwnerEntity!: OwnerEntity;
+  selectedOwnerEntity!: OwnerEntity | null;
 
-  owners2!: OwnerEntity[];
-  subscribeTest!: Subscription;
+  owners!: OwnerEntity[];
+  subscribeOwners!: Subscription;
 
   constructor(
     private carOwnersService: CarOwnersService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subscribeOwners = this.reloadOwners().subscribe();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscribeOwners) {
+      this.subscribeOwners.unsubscribe();
+    }
+  }
 
   onSelect(owner: OwnerEntity) {
     this.selectedOwnerEntity = owner;
     console.log(this.selectedOwnerEntity); //          УБРАТЬ!!!!
   }
 
-  get owners(): Observable<OwnerEntity[]> {
-    return this.carOwnersService.getOwners();
+  reloadOwners(): Observable<OwnerEntity[]> {
+    return this.carOwnersService.getOwners().pipe(
+      tap((owners) => {
+        this.owners = owners;
+      })
+    );
   }
+  // get owners2(): Observable<OwnerEntity[]> {
+  //   return this.carOwnersService.getOwners();
+  // }
 
-  set owners(data: Observable<OwnerEntity[]>) {}
+  // set owners(data: Observable<OwnerEntity[]>) {}
 
   addOwner() {
     this.router.navigateByUrl('/add');
   }
 
   editOwner() {
-    if (this.selectedOwnerEntity.id) {
+    if (this.selectedOwnerEntity && this.selectedOwnerEntity.id) {
       this.router.navigateByUrl('/edit/' + this.selectedOwnerEntity.id);
     }
   }
 
   deleteOwner() {
-    if (this.selectedOwnerEntity.id) {
-      this.carOwnersService.deleteOwner(this.selectedOwnerEntity.id);
+    if (this.selectedOwnerEntity && this.selectedOwnerEntity.id) {
+      this.carOwnersService
+        .deleteOwner(this.selectedOwnerEntity.id)
+        .pipe(
+          switchMap((_) => {
+            return this.reloadOwners();
+          })
+        )
+        .subscribe((_) => {
+          this.selectedOwnerEntity = null;
+        }); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
   }
 
   viewOwner() {
-    if (this.selectedOwnerEntity.id) {
+    if (this.selectedOwnerEntity && this.selectedOwnerEntity.id) {
       this.router.navigateByUrl('/view/' + this.selectedOwnerEntity.id);
     }
   }
