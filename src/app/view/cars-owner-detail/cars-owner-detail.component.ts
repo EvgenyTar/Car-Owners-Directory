@@ -12,9 +12,8 @@ import {
   FormBuilder,
   Validators,
   FormArray,
-  FormGroup,
-  FormControl,
   ValidationErrors,
+  FormGroup,
 } from '@angular/forms';
 import {
   faPlus,
@@ -22,10 +21,7 @@ import {
   faSave,
   faArrowCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  productionYearValidator,
-  registrationMarkValidator,
-} from '../../shared/validators';
+import { registrationMarkValidator } from '../../shared/validators';
 
 @Component({
   selector: 'app-cars-owner-detail',
@@ -82,9 +78,9 @@ export class CarsOwnerDetailComponent implements OnInit {
         console.log(this.owner);
 
         this.formOwnerEntity = this.formBuilder.group({
-          lastName: this.owner.lastName,
-          firstName: this.owner.firstName,
-          middleName: this.owner.middleName,
+          lastName: [this.owner.lastName, Validators.required],
+          firstName: [this.owner.firstName, Validators.required],
+          middleName: [this.owner.middleName, Validators.required],
           cars: this.formBuilder.array(this.getCarsGroups()),
         });
       });
@@ -100,6 +96,7 @@ export class CarsOwnerDetailComponent implements OnInit {
   }
 
   // -----------------cars: formBuilder-------------
+
   // геттер для массива авто(каждое авто - группа форм)
   get cars() {
     return this.formOwnerEntity.get('cars') as FormArray;
@@ -109,10 +106,20 @@ export class CarsOwnerDetailComponent implements OnInit {
   getCarsGroups() {
     return this.owner.cars.map((car) =>
       this.formBuilder.group({
-        registrationMark: car.registrationMark,
-        carManufacturer: car.carManufacturer,
-        carModel: car.carModel,
-        productionYear: car.productionYear,
+        registrationMark: [
+          car.registrationMark,
+          [Validators.required, registrationMarkValidator],
+        ],
+        carManufacturer: [car.carManufacturer, Validators.required],
+        carModel: [car.carModel, Validators.required],
+        productionYear: [
+          car.productionYear,
+          [
+            Validators.required,
+            Validators.min(1990),
+            Validators.max(new Date().getFullYear()),
+          ],
+        ],
       })
     );
   }
@@ -127,7 +134,14 @@ export class CarsOwnerDetailComponent implements OnInit {
         ],
         carManufacturer: ['', Validators.required],
         carModel: ['', Validators.required],
-        productionYear: [1990, [Validators.required, productionYearValidator]],
+        productionYear: [
+          1990,
+          [
+            Validators.required,
+            Validators.min(1990),
+            Validators.max(new Date().getFullYear()),
+          ],
+        ],
       })
     );
   }
@@ -169,7 +183,12 @@ export class CarsOwnerDetailComponent implements OnInit {
   }
 
   saveOwner() {
-    const owner = this.formOwnerEntity.value;
+    const owner: any = this.formOwnerEntity.value;
+    console.log('Что там внутри OWNER-а при сохранении?: ', owner);
+    console.log(
+      'И что в this.formOwnerEntity.value : ',
+      this.formOwnerEntity.value
+    );
     switch (this.actionType) {
       case ActionType.Add:
         console.log('case ActionType.Add:');

@@ -1,4 +1,10 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import {
+  FormArray,
+  FormControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 
 export function registrationMarkValidator(
   control: FormControl
@@ -36,7 +42,16 @@ export function productionYearValidator(
   const correcProductionYear = value >= 1990 && value <= thisYear;
 
   if (!correcProductionYear) {
-    return { invalidYear: '1990 - ' + thisYear };
+    return { invalidNo: '1990 - ' + thisYear };
   }
   return null;
 }
+
+// export function carLenthValidator(): ValidatorFn {
+//   return (cars: FormArray): { [key: string]: any } => {
+//     if (cars.length !== 0) {
+//       return null;
+//     }
+//     return { error: 'At least one car should be added' };
+//   };
+// }

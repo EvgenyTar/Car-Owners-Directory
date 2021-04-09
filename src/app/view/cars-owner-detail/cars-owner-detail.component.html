@@ -4,6 +4,10 @@
     <label for="last-name" class="col-sm-1 col-form-label-sm">Фамилия</label>
     <div class="col-sm-4">
       <input
+        [class.is-invalid]="
+          formOwnerEntity.get('lastName')!.invalid &&
+          formOwnerEntity.get('lastName')!.touched
+        "
         class="form-control"
         type="text"
         id="last-name"
@@ -17,6 +21,10 @@
     <label for="first-name" class="col-sm-1 col-form-label-sm">Имя</label>
     <div class="col-sm-4">
       <input
+        [class.is-invalid]="
+          formOwnerEntity.get('firstName')!.invalid &&
+          formOwnerEntity.get('firstName')!.touched
+        "
         class="form-control"
         type="text"
         id="first-name"
@@ -30,6 +38,10 @@
     <label for="middle-name" class="col-sm-1 col-form-label-sm">Отчество</label>
     <div class="col-sm-4">
       <input
+        [class.is-invalid]="
+          formOwnerEntity.get('middleName')!.invalid &&
+          formOwnerEntity.get('middleName')!.touched
+        "
         class="form-control"
         type="text"
         id="middle-name"
@@ -68,9 +80,12 @@
           type="text"
           class="form-control"
           name="registrationMark"
-          form
           formControlName="registrationMark"
           [readonly]="readOnly"
+          [class.is-invalid]="
+            car.get('registrationMark')!.invalid &&
+            car.get('registrationMark')!.touched
+          "
         />
       </div>
       <div class="col">
@@ -80,6 +95,10 @@
           name="carManufacturer"
           formControlName="carManufacturer"
           [readonly]="readOnly"
+          [class.is-invalid]="
+            car.get('carManufacturer')!.invalid &&
+            car.get('carManufacturer')!.touched
+          "
         />
       </div>
       <div class="col">
@@ -89,6 +108,9 @@
           name="carModel"
           formControlName="carModel"
           [readonly]="readOnly"
+          [class.is-invalid]="
+            car.get('carModel')!.invalid && car.get('carModel')!.touched
+          "
         />
       </div>
       <div class="col">
@@ -98,6 +120,10 @@
           name="productionYear"
           formControlName="productionYear"
           [readonly]="readOnly"
+          [class.is-invalid]="
+            car.get('productionYear')!.invalid &&
+            car.get('productionYear')!.touched
+          "
         />
       </div>
       <div class="col">
