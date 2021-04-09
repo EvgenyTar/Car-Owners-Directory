@@ -22,6 +22,10 @@ import {
   faSave,
   faArrowCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
+import {
+  productionYearValidator,
+  registrationMarkValidator,
+} from '../../shared/validators';
 
 @Component({
   selector: 'app-cars-owner-detail',
@@ -119,62 +123,15 @@ export class CarsOwnerDetailComponent implements OnInit {
       this.formBuilder.group({
         registrationMark: [
           '',
-          [Validators.required, this.registrationMarkValidator],
+          [Validators.required, registrationMarkValidator],
         ],
         carManufacturer: ['', Validators.required],
         carModel: ['', Validators.required],
-        productionYear: [
-          1990,
-          [Validators.required, this.productionYearValidator],
-        ],
+        productionYear: [1990, [Validators.required, productionYearValidator]],
       })
     );
   }
 
-  // -----------------Валидаторы--------------------
-
-  private registrationMarkValidator(
-    control: FormControl
-  ): ValidationErrors | null {
-    const value = control.value;
-
-    const startCharacter = value.substring(0, 2);
-    const numberInMark = value.substring(2, 6);
-    const endCharacter = value.substring(6, 8);
-
-    const correctLenth = value ? value.length === 8 : false;
-    const correctStartCharacter = /[А-Я][А-Я]/.test(value);
-    const correctNumberInMark = /[0-9][0-9][0-9][0-9]/.test(value);
-    const correctEndharacter = /[А-Я][А-Я]/.test(value);
-
-    const registrationMarkValid =
-      correctLenth &&
-      correctStartCharacter &&
-      correctNumberInMark &&
-      correctEndharacter;
-
-    if (!registrationMarkValid) {
-      return { invalidNumber: 'Формат: АА7777КК' };
-    }
-    return null;
-  }
-
-  private productionYearValidator(
-    control: FormControl
-  ): ValidationErrors | null {
-    const value = control.value;
-
-    const today = new Date();
-    const thisYear = today.getFullYear();
-    const correcProductionYear = value >= 1990 && value <= thisYear;
-
-    if (!correcProductionYear) {
-      return { invalidYear: '1990 - ' + thisYear };
-    }
-    return null;
-  }
-
-  //-------------------edit-------------------------
   editOwner() {
     console.log(this.owner);
 
@@ -184,11 +141,6 @@ export class CarsOwnerDetailComponent implements OnInit {
         this.router.navigateByUrl('');
       });
   }
-
-  goBack() {
-    this.location.back();
-  }
-  //--------------------------------------------------------
 
   createCar() {
     if (this.owner) {
@@ -201,8 +153,6 @@ export class CarsOwnerDetailComponent implements OnInit {
         productionYear: 1990,
       });
       this.owner.cars.push(newCar);
-
-      // owner = this.carOwnersService.getOwnerById(idOwner);
     }
   }
 
@@ -250,5 +200,9 @@ export class CarsOwnerDetailComponent implements OnInit {
   onSubmit() {
     this.saveOwner();
     console.log('Submit button:', this.formOwnerEntity.value);
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

@@ -1,40 +1,42 @@
-<h2>Владельцы автомобилей</h2>
+<div class="page">
+  <div class="title">Владельцы автомобилей</div>
 
-<button class="btn btn-add" (click)="addOwner()">
-  <fa-icon [icon]="faPlus"></fa-icon> Добавить
-</button>
-<button class="btn" (click)="viewOwner()" [disabled]="!selectedOwnerEntity">
-  <fa-icon [icon]="faEye"></fa-icon>
-  Просмотр
-</button>
-<button class="btn" (click)="editOwner()" [disabled]="!selectedOwnerEntity">
-  <fa-icon [icon]="faEdit"></fa-icon>
-  Редактировать
-</button>
-<button class="btn" (click)="deleteOwner()" [disabled]="!selectedOwnerEntity">
-  <fa-icon [icon]="faTrashAlt"></fa-icon>
-  Удалить
-</button>
-<table class="table table-bordered" [ngClass]="{ 'table-hover': true }">
-  <!-- Position Column -->
-  <thead>
-    <tr>
-      <th scope="col">Фамилия</th>
-      <th scope="col">Имя</th>
-      <th scope="col">Отчество</th>
-      <th scope="col">Количество автомобилей</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr
-      *ngFor="let owner of owners"
-      (click)="onSelect(owner)"
-      [ngClass]="{ selected: selectedOwnerEntity?.id === owner.id }"
-    >
-      <td>{{ owner.lastName }}</td>
-      <td>{{ owner.firstName }}</td>
-      <td>{{ owner.middleName }}</td>
-      <td>{{ owner.cars.length }}</td>
-    </tr>
-  </tbody>
-</table>
+  <button class="btn btn-add" (click)="addOwner()">
+    <fa-icon [icon]="faPlus"></fa-icon> Добавить
+  </button>
+  <button class="btn" (click)="viewOwner()" [disabled]="!selectedOwnerEntity">
+    <fa-icon [icon]="faEye"></fa-icon>
+    Просмотр
+  </button>
+  <button class="btn" (click)="editOwner()" [disabled]="!selectedOwnerEntity">
+    <fa-icon [icon]="faEdit"></fa-icon>
+    Редактировать
+  </button>
+  <button class="btn" (click)="deleteOwner()" [disabled]="!selectedOwnerEntity">
+    <fa-icon [icon]="faTrashAlt"></fa-icon>
+    Удалить
+  </button>
+  <table class="table table-bordered" [ngClass]="{ 'table-hover': true }">
+    <!-- Position Column -->
+    <thead>
+      <tr>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
+        <th scope="col">Количество автомобилей</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let owner of owners"
+        (click)="onSelect(owner)"
+        [ngClass]="{ selected: selectedOwnerEntity?.id === owner.id }"
+      >
+        <td>{{ owner.lastName }}</td>
+        <td>{{ owner.firstName }}</td>
+        <td>{{ owner.middleName }}</td>
+        <td>{{ owner.cars.length }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

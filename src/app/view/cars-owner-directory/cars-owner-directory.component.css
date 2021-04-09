@@ -1,8 +1,16 @@
-/* .table {
-  width: 70%;
-  margin: 20px auto;
+.page {
+  font-size: 15px;
+}
+
+.title {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.table {
   table-layout: fixed;
-} */
+}
 
 .selected {
   background-color: #ccc;
@@ -12,6 +20,7 @@
   margin: 10px 10px 10px 0;
   border: 1px solid #ccc;
   background-color: #eee;
+  font-size: inherit;
 }
 
 .btn-add {
