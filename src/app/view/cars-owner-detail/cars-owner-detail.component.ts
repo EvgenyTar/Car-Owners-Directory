@@ -107,6 +107,7 @@ export class CarsOwnerDetailComponent implements OnInit {
     return this.owner.cars.map((car) =>
       this.formBuilder.group({
         id: car.id,
+        idOwner: car.idOwner,
         registrationMark: [
           car.registrationMark,
           [Validators.required, registrationMarkValidator],
@@ -172,17 +173,10 @@ export class CarsOwnerDetailComponent implements OnInit {
   }
 
   deleteCar(index: number) {
-    // this.selectedCarEntity = car;
-    // if (this.selectedCarEntity && this.owner) {
-    //   console.log(car);
-    //   const indexSelectedCar = this.owner.cars.findIndex(
-    //     (item) => item.id === car.id
-    //   );
-    //   console.log('index: ', indexSelectedCar);
-    //   this.owner.cars.splice(indexSelectedCar, 1);
-    // }
     if (this.owner && this.owner.cars && this.owner.cars.length > index) {
       this.owner.cars.splice(index, 1);
+    }
+    if (this.cars && this.cars.length > index) {
       this.cars.removeAt(index);
     }
   }
