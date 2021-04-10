@@ -106,6 +106,7 @@ export class CarsOwnerDetailComponent implements OnInit {
   getCarsGroups() {
     return this.owner.cars.map((car) =>
       this.formBuilder.group({
+        id: car.id,
         registrationMark: [
           car.registrationMark,
           [Validators.required, registrationMarkValidator],
@@ -212,6 +213,7 @@ export class CarsOwnerDetailComponent implements OnInit {
         this.owner.lastName = owner.lastName;
         this.owner.firstName = owner.firstName;
         this.owner.middleName = owner.middleName;
+        this.owner.cars = owner.cars;
         this.carOwnersService.editOwner(this.owner).subscribe((_) => {
           this.router.navigateByUrl('');
         });
