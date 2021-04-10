@@ -170,15 +170,19 @@ export class CarsOwnerDetailComponent implements OnInit {
     }
   }
 
-  deleteCar(car: CarEntity) {
-    this.selectedCarEntity = car;
-    if (this.selectedCarEntity && this.owner) {
-      console.log(car);
-      const indexSelectedCar = this.owner.cars.findIndex(
-        (item) => item.id === car.id
-      );
-      console.log('index: ', indexSelectedCar);
-      this.owner.cars.splice(indexSelectedCar, 1);
+  deleteCar(index: number) {
+    // this.selectedCarEntity = car;
+    // if (this.selectedCarEntity && this.owner) {
+    //   console.log(car);
+    //   const indexSelectedCar = this.owner.cars.findIndex(
+    //     (item) => item.id === car.id
+    //   );
+    //   console.log('index: ', indexSelectedCar);
+    //   this.owner.cars.splice(indexSelectedCar, 1);
+    // }
+    if (this.owner && this.owner.cars && this.owner.cars.length > index) {
+      this.owner.cars.splice(index, 1);
+      this.cars.removeAt(index);
     }
   }
 
