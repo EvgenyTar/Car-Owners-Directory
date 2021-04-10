@@ -1,8 +1,5 @@
-import { CarEntity } from './../model/car';
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { TestData } from '../data/TestData';
-import { OwnerEntity } from '../model/owner';
 
 @Injectable({
   providedIn: 'root',

@@ -1,8 +1,7 @@
 import { ActionType } from './../../model/action-type';
-import { TestData } from './../../data/TestData';
 import { OwnerEntity } from './../../model/owner';
 import { CarEntity } from 'src/app/model/car';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -12,8 +11,6 @@ import {
   FormBuilder,
   Validators,
   FormArray,
-  ValidationErrors,
-  FormGroup,
 } from '@angular/forms';
 import {
   faPlus,
