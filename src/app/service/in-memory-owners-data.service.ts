@@ -128,7 +128,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
     return { owners, cars };
   }
 
-  genId<T extends OwnerEntity | CarEntity>(myTable: T[]): number {
+  genId(myTable: {id: number}[]): number {
     return myTable.length > 0 ? Math.max(...myTable.map((t) => t.id)) + 1 : 11;
   }
 }
