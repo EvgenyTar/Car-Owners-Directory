@@ -1,8 +1,8 @@
 import { CarEntity } from './../model/car';
 import { Injectable } from '@angular/core';
-import { concat, Observable, zip } from 'rxjs';
+import { concat, Observable, of, zip } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +27,35 @@ export class CarsService {
     return zip(
       ...carsId.map((id) => {
         return this.httpClient.delete(this.carsUrl + '/' + id);
+      })
+    );
+  }
+
+  editCars(ownerId: number, cars: CarEntity[]): Observable<any> {
+    const carsIds = cars.map((car) => car.id);
+
+    return this.getCarsByOwnerId(ownerId).pipe(
+      switchMap((previousCars) => {
+        const deleteCarsIds = previousCars
+          .filter((car) => {
+            return !carsIds.includes(car.id);
+          })
+          .map((car) => car.id);
+        if (deleteCarsIds.length !== 0) {
+          return this.deleteCars(deleteCarsIds).pipe(map((_) => previousCars));
+        }
+        return of(previousCars);
+      }),
+      switchMap((previousCars) => {
+        const createCars = cars.filter((car) => {
+          return !car.id;
+        });
+        if (createCars.length !== 0) {
+          return this.createCars(ownerId, createCars).pipe(
+            map((_) => previousCars)
+          );
+        }
+        return of(previousCars);
       })
     );
   }

@@ -1,11 +1,10 @@
 import { CarEntity } from './../model/car';
 import { Injectable } from '@angular/core';
-import { concat, Observable, of } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
-import { TestData } from '../data/TestData';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import ICarOwnersService from '../interface/interfaces';
 import { OwnerEntity } from '../model/owner';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CarsService } from './cars.service';
 
 @Injectable({
@@ -13,7 +12,6 @@ import { CarsService } from './cars.service';
 })
 export class CarOwnersService implements ICarOwnersService {
   private ownersUrl = 'api/owners';
-  private carsUrl = 'api/cars';
 
   constructor(
     private httpClient: HttpClient,
@@ -87,6 +85,9 @@ export class CarOwnersService implements ICarOwnersService {
 
   editOwner(aOwner: OwnerEntity): Observable<OwnerEntity> {
     return this.httpClient.put(this.ownersUrl, aOwner).pipe(
+      switchMap((_) => {
+        return this.carsService.editCars(aOwner.id, aOwner.cars);
+      }),
       switchMap((_) => {
         return this.getOwnerById(aOwner.id);
       })
