@@ -11,38 +11,9 @@ export function registrationMarkValidator(
 ): ValidationErrors | null {
   const value = control.value;
 
-  const startCharacter = value.substring(0, 2);
-  const numberInMark = value.substring(2, 6);
-  const endCharacter = value.substring(6, 8);
-
-  const correctLenth = value ? value.length === 8 : false;
-  const correctStartCharacter = /[А-Я][А-Я]/.test(value);
-  const correctNumberInMark = /[0-9][0-9][0-9][0-9]/.test(value);
-  const correctEndharacter = /[А-Я][А-Я]/.test(value);
-
-  const registrationMarkValid =
-    correctLenth &&
-    correctStartCharacter &&
-    correctNumberInMark &&
-    correctEndharacter;
-
-  if (!registrationMarkValid) {
+  const correvalue = /[A-Z]{2}[0-9]{4}[A-Z]{2}/.test(value);
+  if (!correvalue) {
     return { invalidNumber: 'Формат: АА7777КК' };
-  }
-  return null;
-}
-
-export function productionYearValidator(
-  control: FormControl
-): ValidationErrors | null {
-  const value = control.value;
-
-  const today = new Date();
-  const thisYear = today.getFullYear();
-  const correcProductionYear = value >= 1990 && value <= thisYear;
-
-  if (!correcProductionYear) {
-    return { invalidNo: '1990 - ' + thisYear };
   }
   return null;
 }

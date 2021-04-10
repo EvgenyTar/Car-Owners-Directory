@@ -86,7 +86,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
       {
         id: 1,
         idOwner: 1,
-        registrationMark: 'АН2343ХК',
+        registrationMark: 'BV2343MN',
         carManufacturer: 'BMW',
         carModel: '701',
         productionYear: 1999,
@@ -94,7 +94,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
       {
         id: 2,
         idOwner: 1,
-        registrationMark: 'АП3333ХК',
+        registrationMark: 'RF3333IJ',
         carManufacturer: 'Fiat',
         carModel: 'Panda',
         productionYear: 1999,
@@ -102,7 +102,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
       {
         id: 3,
         idOwner: 2,
-        registrationMark: 'УХ7777АХ',
+        registrationMark: 'DD7777LL',
         carManufacturer: 'Renault',
         carModel: 'Sandero',
         productionYear: 1999,
@@ -110,7 +110,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
       {
         id: 4,
         idOwner: 3,
-        registrationMark: 'КИ6543КИ',
+        registrationMark: 'GG6543BB',
         carManufacturer: 'Dachia',
         carModel: 'Sandero',
         productionYear: 1999,
@@ -118,7 +118,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
       {
         id: 5,
         idOwner: 3,
-        registrationMark: 'КА6756КА',
+        registrationMark: 'VV6756VV',
         carManufacturer: 'DAEWOO',
         carModel: 'Lanos',
         productionYear: 1999,
@@ -128,7 +128,7 @@ export class InMemoryOwnersDataService implements InMemoryDbService {
     return { owners, cars };
   }
 
-  genId(myTable: {id: number}[]): number {
+  genId(myTable: { id: number }[]): number {
     return myTable.length > 0 ? Math.max(...myTable.map((t) => t.id)) + 1 : 11;
   }
 }
