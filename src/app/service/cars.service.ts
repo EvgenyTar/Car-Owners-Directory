@@ -56,6 +56,18 @@ export class CarsService {
           );
         }
         return of(previousCars);
+      }),
+      switchMap((previousCars) => {
+        const carsPreviousIds = previousCars.map((car) => car.id);
+        const editCars = cars.filter((car) => {
+          return carsPreviousIds.includes(car.id);
+        });
+
+        return zip(
+          ...editCars.map((car) => {
+            return this.httpClient.put(this.carsUrl, car);
+          })
+        );
       })
     );
   }
