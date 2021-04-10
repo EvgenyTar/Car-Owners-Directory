@@ -18,6 +18,7 @@ import {
 import {
   registrationMarkValidator,
   carLenthValidator,
+  ExistCarValidation,
 } from '../../shared/validators';
 
 @Component({
@@ -106,24 +107,29 @@ export class CarsOwnerDetailComponent implements OnInit {
   //Добавление в форму всех авто из owner-а
   getCarsGroups() {
     return this.owner.cars.map((car) =>
-      this.formBuilder.group({
-        id: car.id,
-        idOwner: car.idOwner,
-        registrationMark: [
-          car.registrationMark,
-          [Validators.required, registrationMarkValidator],
-        ],
-        carManufacturer: [car.carManufacturer, Validators.required],
-        carModel: [car.carModel, Validators.required],
-        productionYear: [
-          car.productionYear,
-          [
-            Validators.required,
-            Validators.min(1990),
-            Validators.max(new Date().getFullYear()),
+      this.formBuilder.group(
+        {
+          id: car.id,
+          idOwner: car.idOwner,
+          registrationMark: [
+            car.registrationMark,
+            [Validators.required, registrationMarkValidator],
           ],
-        ],
-      })
+          carManufacturer: [car.carManufacturer, Validators.required],
+          carModel: [car.carModel, Validators.required],
+          productionYear: [
+            car.productionYear,
+            [
+              Validators.required,
+              Validators.min(1990),
+              Validators.max(new Date().getFullYear()),
+            ],
+          ],
+        },
+        {
+          asyncValidator: ExistCarValidation.createValidator(this.carsService),
+        }
+      )
     );
   }
 

@@ -85,4 +85,17 @@ export class CarsService {
       })
     );
   }
+
+  isCarExist(car: any): Observable<boolean> {
+    let carsUrl = this.carsUrl;
+    if (car) {
+      carsUrl += '?registrationMark=' + car.registrationMark;
+    }
+    return this.httpClient.get<any[]>(carsUrl).pipe(
+      map((cars) => {
+        return cars.filter(item => car.id !== item.id ).length > 0;
+        
+      })
+    );
+  }
 }

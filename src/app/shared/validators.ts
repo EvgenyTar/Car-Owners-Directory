@@ -1,3 +1,4 @@
+import { CarsService } from './../service/cars.service';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import {
   AbstractControl,
@@ -6,6 +7,8 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 export function registrationMarkValidator(
   control: FormControl
@@ -27,4 +30,23 @@ export function carLenthValidator(): ValidatorFn {
     }
     return null;
   };
+}
+
+export class ExistCarValidation {
+  static createValidator(carsService: CarsService) {
+    return (control: AbstractControl) => {
+      return of(control.dirty).pipe(
+        switchMap((dirty) => {
+          if (!dirty) {
+            return of(null);
+          }
+          return carsService.isCarExist(control.value).pipe(
+            map((carExist) => {
+              return carExist ? { emailTaken: true } : null;
+            })
+          );
+        })
+      );
+    };
+  }
 }
