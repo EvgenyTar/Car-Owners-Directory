@@ -1,5 +1,6 @@
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import {
+  AbstractControl,
   FormArray,
   FormControl,
   ValidationErrors,
@@ -18,11 +19,12 @@ export function registrationMarkValidator(
   return null;
 }
 
-// export function carLenthValidator(): ValidatorFn {
-//   return (cars: FormArray): { [key: string]: any } => {
-//     if (cars.length !== 0) {
-//       return null;
-//     }
-//     return { error: 'At least one car should be added' };
-//   };
-// }
+export function carLenthValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const cars = control as FormArray;
+    if (cars && cars.length === 0) {
+      return { error: 'At least one car should be added' };
+    }
+    return null;
+  };
+}

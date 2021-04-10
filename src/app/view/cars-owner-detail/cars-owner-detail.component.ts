@@ -1,24 +1,24 @@
+import { CarsService } from './../../service/cars.service';
 import { ActionType } from './../../model/action-type';
 import { OwnerEntity } from './../../model/owner';
 import { CarEntity } from 'src/app/model/car';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
-import {
-  FormBuilder,
-  Validators,
-  FormArray,
-} from '@angular/forms';
+import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import {
   faPlus,
   faTrashAlt,
   faSave,
   faArrowCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
-import { registrationMarkValidator } from '../../shared/validators';
+import {
+  registrationMarkValidator,
+  carLenthValidator,
+} from '../../shared/validators';
 
 @Component({
   selector: 'app-cars-owner-detail',
@@ -43,7 +43,7 @@ export class CarsOwnerDetailComponent implements OnInit {
     lastName: ['', Validators.required],
     firstName: ['', Validators.required],
     middleName: ['', Validators.required],
-    cars: this.formBuilder.array([]),
+    cars: this.formBuilder.array([], carLenthValidator()),
   });
 
   //--------------------------------------------------------
@@ -53,7 +53,8 @@ export class CarsOwnerDetailComponent implements OnInit {
     private carOwnersService: CarOwnersService,
     private activateRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private location: Location
+    private location: Location,
+    private carsService: CarsService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +79,10 @@ export class CarsOwnerDetailComponent implements OnInit {
           lastName: [this.owner.lastName, Validators.required],
           firstName: [this.owner.firstName, Validators.required],
           middleName: [this.owner.middleName, Validators.required],
-          cars: this.formBuilder.array(this.getCarsGroups()),
+          cars: this.formBuilder.array(
+            this.getCarsGroups(),
+            carLenthValidator()
+          ),
         });
       });
   }
@@ -185,6 +189,7 @@ export class CarsOwnerDetailComponent implements OnInit {
       'И что в this.formOwnerEntity.value : ',
       this.formOwnerEntity.value
     );
+
     switch (this.actionType) {
       case ActionType.Add:
         console.log('case ActionType.Add:');
@@ -196,6 +201,7 @@ export class CarsOwnerDetailComponent implements OnInit {
             owner.cars
           )
           .subscribe((_) => {
+            ////////////////////////////////////////////////
             this.router.navigateByUrl('');
           });
         break;
@@ -206,6 +212,7 @@ export class CarsOwnerDetailComponent implements OnInit {
         this.owner.middleName = owner.middleName;
         this.owner.cars = owner.cars;
         this.carOwnersService.editOwner(this.owner).subscribe((_) => {
+          //////////////////////////////
           this.router.navigateByUrl('');
         });
         break;
