@@ -6,6 +6,7 @@ import { TestData } from '../data/TestData';
 import ICarOwnersService from '../interface/interfaces';
 import { OwnerEntity } from '../model/owner';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CarsService } from './cars.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,10 @@ export class CarOwnersService implements ICarOwnersService {
   private ownersUrl = 'api/owners';
   private carsUrl = 'api/cars';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private carsService: CarsService
+  ) {}
 
   getOwners(): Observable<OwnerEntity[]> {
     return this._getOwners();
@@ -34,18 +38,10 @@ export class CarOwnersService implements ICarOwnersService {
         });
       }),
       switchMap((owners) => {
-        let carsUrl = this.carsUrl;
-        if (ownerId) {
-          carsUrl += '?idOwner=' + ownerId;
-        }
-        return this.httpClient.get<any[]>(carsUrl).pipe(
+        return this.carsService.getCarsByOwnerId(ownerId).pipe(
           map((cars) => {
             for (const owner of owners) {
-              owner.cars = cars
-                .filter((car) => car.idOwner === owner.id)
-                .map((car) => {
-                  return CarEntity.createFromAny(car);
-                });
+              owner.cars = cars.filter((car) => car.idOwner === owner.id);
             }
             return owners;
           })
@@ -82,9 +78,9 @@ export class CarOwnersService implements ICarOwnersService {
           return OwnerEntity.createFromAny(owner);
         }),
         switchMap((owner) => {
-          return this._createCars(owner.id, aCars).pipe(
-            switchMap((_) => this.getOwnerById(owner.id))
-          );
+          return this.carsService
+            .createCars(owner.id, aCars)
+            .pipe(switchMap((_) => this.getOwnerById(owner.id)));
         })
       );
   }
@@ -98,40 +94,19 @@ export class CarOwnersService implements ICarOwnersService {
   }
 
   deleteOwner(aOwnerId: number): Observable<void> {
-    let ownersUrl = this.ownersUrl + '/' + aOwnerId;
-
-    let cars = this.getCarsByOwnerId(aOwnerId);
-    let carsId = cars.map((car) => car.id);
-
-    return this.httpClient
-      .delete<void>(ownersUrl)
-      .pipe(switchMap((_) => this._deleteCars(carsId)));
-  }
-
-  private _createCars(idOwner: number, cars: CarEntity[]): Observable<any> {
-    for (const car of cars) {
-      car.idOwner = idOwner;
-    }
-    return concat(
-      ...cars.map((item) => {
-        return this.httpClient.post(this.carsUrl, item);
+    return this.carsService.getCarsByOwnerId(aOwnerId).pipe(
+      switchMap((cars) => {
+        let ownersUrl = this.ownersUrl + '/' + aOwnerId;
+        return this.httpClient.delete<void>(ownersUrl).pipe(
+          switchMap((_) => {
+            let carsId = cars.map((car) => car.id);
+            if (!carsId) {
+              return of(_);
+            }
+            return this.carsService.deleteCars(carsId);
+          })
+        );
       })
     );
-  }
-
-  private _deleteCars(carsId: number[]): Observable<any> {
-    return concat(
-      ...carsId.map((id) => {
-        return this.httpClient.delete(this.carsUrl + '/' + id);
-      })
-    );
-  }
-
-  getCarsByOwnerId(ownerId: number): CarEntity[] {
-    return TestData.cars
-      .filter((item) => item.idOwner === ownerId)
-      .map((item) => {
-        return CarEntity.createFromAny(item);
-      });
   }
 }
