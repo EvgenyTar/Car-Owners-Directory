@@ -1,4 +1,3 @@
-import { element } from 'protractor';
 import { Observable, Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { CarOwnersService } from 'src/app/service/car-owners.service';
@@ -11,6 +10,7 @@ import {
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { tap, switchMap } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cars-owner-directory',
@@ -32,11 +32,15 @@ export class CarsOwnerDirectoryComponent implements OnInit {
 
   constructor(
     private carOwnersService: CarOwnersService,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.subscribeOwners = this.reloadOwners().subscribe();
+    this.spinner.show();
+    this.subscribeOwners = this.reloadOwners().subscribe((_) => {
+      this.spinner.hide();
+    });
   }
 
   ngOnDestroy(): void {

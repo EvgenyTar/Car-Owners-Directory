@@ -12,6 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryOwnersDataService } from 'src/app/service/in-memory-owners-data.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { InMemoryOwnersDataService } from 'src/app/service/in-memory-owners-data
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryOwnersDataService, {
       dataEncapsulation: false,

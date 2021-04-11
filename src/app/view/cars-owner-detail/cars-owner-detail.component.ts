@@ -20,6 +20,7 @@ import {
   carLengthValidator,
   ExistCarValidation,
 } from '../../shared/validators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cars-owner-detail',
@@ -58,10 +59,12 @@ export class CarsOwnerDetailComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private location: Location,
-    private carsService: CarsService
+    private carsService: CarsService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this.getOwnerSubscription = this.activateRoute.paramMap
       .pipe(
         switchMap((params) => {
@@ -89,6 +92,7 @@ export class CarsOwnerDetailComponent implements OnInit {
             [carLengthValidator(), carCheckDuplicateValidator()]
           ),
         });
+        this.spinner.hide();
       });
   }
 
