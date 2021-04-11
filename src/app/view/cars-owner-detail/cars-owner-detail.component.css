@@ -15,6 +15,10 @@
   margin-top: 20px;
 }
 
+.col-warning {
+  color: rgb(158, 34, 34);
+}
+
 .my-label {
   margin: 0;
 }
