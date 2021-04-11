@@ -71,9 +71,32 @@
     </div>
     <div class="col"></div>
   </div>
+  <!-- Хоть один автомобиль должен быть у владельца -->
+  <div
+    class="col-12 col-warning"
+    *ngIf="formOwnerEntity.get('cars')?.getError('errorLength')"
+  >
+    {{ formOwnerEntity.get("cars")?.getError("errorLength") }}
+  </div>
+
+  <!-- Cохранение одинаковыч машин -->
+  <div
+    class="col-12 col-warning"
+    *ngIf="formOwnerEntity.get('cars')?.getError('errorCarDoubled')"
+  >
+    {{ formOwnerEntity.get("cars")?.getError("errorCarDoubled") }}
+  </div>
+  <!-- End проверки на дубликаты авто, дубликаты при создании, наличие одного авто у владельца -->
 
   <!-- Cars table body -->
   <div formArrayName="cars" *ngFor="let car of cars.controls; let i = index">
+    <div class="row my-row">
+      <!-- Такое авто уже есть в базе -->
+      <div class="col-12 col-warning" *ngIf="car.getError('errorCarExistInDb')">
+        {{ car.getError("errorCarExistInDb") }}
+      </div>
+      <!-- End -->
+    </div>
     <div class="row my-row" [formGroupName]="i">
       <div class="col">
         <!-- HIDDEN -->
