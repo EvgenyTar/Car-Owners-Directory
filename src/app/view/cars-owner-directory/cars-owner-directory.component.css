@@ -12,7 +12,15 @@
   table-layout: fixed;
 }
 
+.row-hover:hover {
+  background-color: #eee;
+}
+
 .selected {
+  background-color: rgb(180, 178, 178);
+}
+
+.row-hover.selected:hover {
   background-color: rgb(180, 178, 178);
 }
 

@@ -16,7 +16,7 @@
     <fa-icon [icon]="faTrashAlt"></fa-icon>
     Удалить
   </button>
-  <table class="table table-bordered" [ngClass]="{ 'table-hover': true }">
+  <table class="table table-bordered">
     <!-- Position Column -->
     <thead>
       <tr>
@@ -30,6 +30,7 @@
       <tr
         *ngFor="let owner of owners"
         (click)="onSelect(owner)"
+        class="row-hover"
         [ngClass]="{ selected: selectedOwnerEntity?.id === owner.id }"
       >
         <td>{{ owner.lastName }}</td>
