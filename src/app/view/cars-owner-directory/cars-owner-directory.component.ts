@@ -28,7 +28,8 @@ export class CarsOwnerDirectoryComponent implements OnInit {
   selectedOwnerEntity!: OwnerEntity | null;
 
   owners!: OwnerEntity[];
-  subscribeOwners!: Subscription;
+  private subscribeOwners!: Subscription;
+  private subscribeDeleteOwner!: Subscription;
 
   constructor(
     private carOwnersService: CarOwnersService,
@@ -47,11 +48,17 @@ export class CarsOwnerDirectoryComponent implements OnInit {
     if (this.subscribeOwners) {
       this.subscribeOwners.unsubscribe();
     }
+    this.unsubscribeSubscribeDeleteOwner();
+  }
+
+  unsubscribeSubscribeDeleteOwner() {
+    if (this.subscribeDeleteOwner) {
+      this.subscribeDeleteOwner.unsubscribe();
+    }
   }
 
   onSelect(owner: OwnerEntity) {
     this.selectedOwnerEntity = owner;
-    console.log(this.selectedOwnerEntity); //          УБРАТЬ!!!!
   }
 
   reloadOwners(): Observable<OwnerEntity[]> {
@@ -61,11 +68,6 @@ export class CarsOwnerDirectoryComponent implements OnInit {
       })
     );
   }
-  // get owners2(): Observable<OwnerEntity[]> {
-  //   return this.carOwnersService.getOwners();
-  // }
-
-  // set owners(data: Observable<OwnerEntity[]>) {}
 
   addOwner() {
     this.router.navigateByUrl('/add');
@@ -79,7 +81,8 @@ export class CarsOwnerDirectoryComponent implements OnInit {
 
   deleteOwner() {
     if (this.selectedOwnerEntity && this.selectedOwnerEntity.id) {
-      this.carOwnersService
+      this.unsubscribeSubscribeDeleteOwner();
+      this.subscribeDeleteOwner = this.carOwnersService
         .deleteOwner(this.selectedOwnerEntity.id)
         .pipe(
           switchMap((_) => {
@@ -88,7 +91,7 @@ export class CarsOwnerDirectoryComponent implements OnInit {
         )
         .subscribe((_) => {
           this.selectedOwnerEntity = null;
-        }); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        });
     }
   }
 

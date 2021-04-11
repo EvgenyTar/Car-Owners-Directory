@@ -35,6 +35,8 @@ export class CarsOwnerDetailComponent implements OnInit {
   owner!: OwnerEntity;
   private getOwnerSubscription!: Subscription | null;
   private editOwnerSubscription!: Subscription;
+  private createOwnerSubscription!: Subscription;
+
   faSave = faSave;
   faArrowCircleLeft = faArrowCircleLeft;
   faPlus = faPlus;
@@ -100,11 +102,20 @@ export class CarsOwnerDetailComponent implements OnInit {
     if (this.getOwnerSubscription) {
       this.getOwnerSubscription.unsubscribe();
     }
+    this.unsubscribeEditOwnerSubscription();
+  }
+
+  unsubscribeEditOwnerSubscription() {
     if (this.editOwnerSubscription) {
       this.editOwnerSubscription.unsubscribe();
     }
   }
 
+  unsubscribeCreateOwnerSubscription() {
+    if (this.createOwnerSubscription) {
+      this.createOwnerSubscription.unsubscribe();
+    }
+  }
   // -----------------cars: formBuilder-------------
 
   // геттер для массива авто(каждое авто - группа форм)
@@ -176,16 +187,6 @@ export class CarsOwnerDetailComponent implements OnInit {
     );
   }
 
-  editOwner() {
-    console.log(this.owner);
-
-    this.editOwnerSubscription = this.carOwnersService
-      .editOwner(this.owner)
-      .subscribe((_) => {
-        this.router.navigateByUrl('');
-      });
-  }
-
   createCar() {
     if (this.owner) {
       const newCar = CarEntity.createFromAny({
@@ -220,7 +221,8 @@ export class CarsOwnerDetailComponent implements OnInit {
     switch (this.actionType) {
       case ActionType.Add:
         console.log('case ActionType.Add:');
-        this.carOwnersService
+        this.unsubscribeCreateOwnerSubscription();
+        this.createOwnerSubscription = this.carOwnersService
           .createOwner(
             owner.lastName,
             owner.firstName,
@@ -228,7 +230,6 @@ export class CarsOwnerDetailComponent implements OnInit {
             owner.cars
           )
           .subscribe((_) => {
-            ////////////////////////////////////////////////
             this.router.navigateByUrl('');
           });
         break;
@@ -238,10 +239,12 @@ export class CarsOwnerDetailComponent implements OnInit {
         this.owner.firstName = owner.firstName;
         this.owner.middleName = owner.middleName;
         this.owner.cars = owner.cars;
-        this.carOwnersService.editOwner(this.owner).subscribe((_) => {
-          //////////////////////////////
-          this.router.navigateByUrl('');
-        });
+        this.unsubscribeEditOwnerSubscription();
+        this.editOwnerSubscription = this.carOwnersService
+          .editOwner(this.owner)
+          .subscribe((_) => {
+            this.router.navigateByUrl('');
+          });
         break;
     }
   }
