@@ -10,19 +10,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-export function registrationMarkValidator(
-  control: FormControl
-): ValidationErrors | null {
-  const value = control.value;
-
-  const correvalue = /[A-Z]{2}[0-9]{4}[A-Z]{2}/.test(value);
-  if (!correvalue) {
-    return { invalidNumber: 'Формат: АА7777КК' };
-  }
-  return null;
-}
-
-export function carLenthValidator(): ValidatorFn {
+export function carLengthValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const cars = control as FormArray;
     if (cars && cars.length === 0) {
@@ -32,6 +20,27 @@ export function carLenthValidator(): ValidatorFn {
   };
 }
 
+export function carCheckDuplicateValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const carsControls = control as FormArray;
+    const cars = carsControls.controls.map((control) => control.value);
+    const filterCars = cars.filter(
+      (car, index, self) =>
+        index ===
+        self.findIndex(
+          (t) =>
+            t.registrationMark === car.registrationMark &&
+            t.carManufacturer === car.carManufacturer &&
+            t.carModel === car.carModel &&
+            t.productionYear === car.productionYear
+        )
+    );
+    if (cars.length !== filterCars.length) {
+      return { errorExist: 'Дублирование автомобилей' };
+    }
+    return null;
+  };
+}
 export class ExistCarValidation {
   static createValidator(carsService: CarsService) {
     return (control: AbstractControl) => {
@@ -42,7 +51,9 @@ export class ExistCarValidation {
           }
           return carsService.isCarExist(control.value).pipe(
             map((carExist) => {
-              return carExist ? { emailTaken: true } : null;
+              return carExist
+                ? { errorExist: 'Такой автомобиль уже есть в базе' }
+                : null;
             })
           );
         })

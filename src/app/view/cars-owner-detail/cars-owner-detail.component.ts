@@ -16,8 +16,8 @@ import {
   faArrowCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import {
-  registrationMarkValidator,
-  carLenthValidator,
+  carCheckDuplicateValidator,
+  carLengthValidator,
   ExistCarValidation,
 } from '../../shared/validators';
 
@@ -44,7 +44,10 @@ export class CarsOwnerDetailComponent implements OnInit {
     lastName: ['', Validators.required],
     firstName: ['', Validators.required],
     middleName: ['', Validators.required],
-    cars: this.formBuilder.array([], carLenthValidator()),
+    cars: this.formBuilder.array(
+      [],
+      [carLengthValidator(), carCheckDuplicateValidator()]
+    ),
   });
 
   //--------------------------------------------------------
@@ -82,7 +85,8 @@ export class CarsOwnerDetailComponent implements OnInit {
           middleName: [this.owner.middleName, Validators.required],
           cars: this.formBuilder.array(
             this.getCarsGroups(),
-            carLenthValidator()
+
+            [carLengthValidator(), carCheckDuplicateValidator()]
           ),
         });
       });
@@ -113,7 +117,10 @@ export class CarsOwnerDetailComponent implements OnInit {
           idOwner: car.idOwner,
           registrationMark: [
             car.registrationMark,
-            [Validators.required, registrationMarkValidator],
+            [
+              Validators.required,
+              Validators.pattern(/[A-Z]{2}[0-9]{4}[A-Z]{2}/),
+            ],
           ],
           carManufacturer: [car.carManufacturer, Validators.required],
           carModel: [car.carModel, Validators.required],
@@ -136,22 +143,30 @@ export class CarsOwnerDetailComponent implements OnInit {
   // добавление нового авто в форму
   addCarToGroup() {
     this.cars.push(
-      this.formBuilder.group({
-        registrationMark: [
-          '',
-          [Validators.required, registrationMarkValidator],
-        ],
-        carManufacturer: ['', Validators.required],
-        carModel: ['', Validators.required],
-        productionYear: [
-          1990,
-          [
-            Validators.required,
-            Validators.min(1990),
-            Validators.max(new Date().getFullYear()),
+      this.formBuilder.group(
+        {
+          registrationMark: [
+            '',
+            [
+              Validators.required,
+              Validators.pattern(/[A-Z]{2}[0-9]{4}[A-Z]{2}/),
+            ],
           ],
-        ],
-      })
+          carManufacturer: ['', Validators.required],
+          carModel: ['', Validators.required],
+          productionYear: [
+            1990,
+            [
+              Validators.required,
+              Validators.min(1990),
+              Validators.max(new Date().getFullYear()),
+            ],
+          ],
+        },
+        {
+          asyncValidator: ExistCarValidation.createValidator(this.carsService),
+        }
+      )
     );
   }
 
