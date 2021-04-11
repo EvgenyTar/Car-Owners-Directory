@@ -89,12 +89,19 @@ export class CarsService {
   isCarExist(car: any): Observable<boolean> {
     let carsUrl = this.carsUrl;
     if (car) {
-      carsUrl += '?registrationMark=' + car.registrationMark;
+      carsUrl +=
+        '?registrationMark=' +
+        car.registrationMark +
+        '&carManufacturer=' +
+        car.carManufacturer +
+        '&carModel=' +
+        car.carModel +
+        '&productionYear=' +
+        car.productionYear;
     }
     return this.httpClient.get<any[]>(carsUrl).pipe(
       map((cars) => {
-        return cars.filter(item => car.id !== item.id ).length > 0;
-        
+        return cars.filter((item) => car.id !== item.id).length > 0;
       })
     );
   }
