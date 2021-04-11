@@ -8,13 +8,15 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { delay, map, switchMap, tap } from 'rxjs/operators';
 
 export function carLengthValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const cars = control as FormArray;
     if (cars && cars.length === 0) {
-      return { error: 'At least one car should be added' };
+      return {
+        errorLength: 'У автовладельца должен быть минимум один автомобиль',
+      };
     }
     return null;
   };
@@ -36,7 +38,7 @@ export function carCheckDuplicateValidator(): ValidatorFn {
         )
     );
     if (cars.length !== filterCars.length) {
-      return { errorExist: 'Дублирование автомобилей' };
+      return { errorCarDoubled: 'Дублирование автомобилей' };
     }
     return null;
   };
@@ -45,14 +47,15 @@ export class ExistCarValidation {
   static createValidator(carsService: CarsService) {
     return (control: AbstractControl) => {
       return of(control.dirty).pipe(
+        delay(500),
         switchMap((dirty) => {
           if (!dirty) {
             return of(null);
           }
           return carsService.isCarExist(control.value).pipe(
-            map((carExist) => {
-              return carExist
-                ? { errorExist: 'Такой автомобиль уже есть в базе' }
+            map((carExistInDb) => {
+              return carExistInDb
+                ? { errorCarExistInDb: 'Такой автомобиль уже есть в базе' }
                 : null;
             })
           );
