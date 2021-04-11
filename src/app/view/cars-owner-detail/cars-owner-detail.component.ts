@@ -149,6 +149,8 @@ export class CarsOwnerDetailComponent implements OnInit {
     this.cars.push(
       this.formBuilder.group(
         {
+          id: '',
+          idOwner: '',
           registrationMark: [
             '',
             [
